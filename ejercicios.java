@@ -12,7 +12,7 @@ Scanner entrada = new Scanner(System.in);
         System.out.println("2. restar");
         System.out.println("3. multiplicar");
         System.out.println("4. salir");
-
+//
         int opcion = 0;
 
         opcion = entrada.nextInt();
