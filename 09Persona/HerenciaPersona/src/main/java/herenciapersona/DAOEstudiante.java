@@ -1,57 +1,133 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package herenciapersona;
 
-/**
- *
- * @author HP
- */
 import javax.swing.JOptionPane;
+
 public class DAOEstudiante {
-    //vamos a crear un programa para dar de alta 10 estudiantes
-    //es un objeto por parte de estudiante
+
     Estudiante obj[] = new Estudiante[10];
     int x = 0;
-    //metodo del menu para el programa
-    void menu(){
+
+    public void menu() {
         String var = "si";
-        String mensaje = "";
-        
-        while(var.equalsIgnoreCase("si")){
-            int po = Interger.parseInt(JOptionPane.showInputDialog("Ingresa la opción deseada: \n" + "1. Dar de alta al nuevo exstudiante. \n" + "2. Mostrar los datos de los estudiante. \n"))
-        
+
+        while (var.equalsIgnoreCase("si")) {
+
+            int op = Integer.parseInt(JOptionPane.showInputDialog(
+                    "CRUD ESTUDIANTES\n"
+                    + "1. Registrar\n"
+                    + "2. Mostrar\n"
+                    + "3. Buscar\n"
+                    + "4. Editar\n"
+                    + "5. Eliminar"
+            ));
+
             switch (op) {
-                case 1:
-                    //metodo para registrar 
-                    pedirEstudiante();
-                    
-                    break;
-                case 2:
-                    //mostrar estudiante
-                    mostrarEstudiante();
+                case 1: registrar(); break;
+                case 2: mostrar(); break;
+                case 3: buscar(); break;
+                case 4: editar(); break;
+                case 5: eliminar(); break;
                 default:
-                    JOptionPane.showMessageDialog(null, "Opcion no valida");
-                    
+                    JOptionPane.showMessageDialog(null, "Opción no válida");
             }
-            mensaje = JOptionPane.showInputDialog("¿Deseas repetir el programa?"); 
+
+            var = JOptionPane.showInputDialog("¿Deseas continuar? (si/no)");
         }
-        public void pedirEstudiante(){
-            int numboleta = Integer.parseInt(JOptionPane.showInputDialog("Ingresa la boleta del estudiante"));
-            String nom = JOptionPane.showInputDialog("Ingresa el nombre del estudiante");
-            int edad = Integer.parseInt(JOptionPane.showInputDialog("Inngresa la edad del estudiante: "));
-            char gen = JOptionPane.showInputDialog("Ingresa el nombre del estudiante").charAt(0);
-            obj[x] = new Estudiante(numboleta, nom, edad, gen);
+    }
+
+    // registrar
+    public void registrar() {
+        if (x < obj.length) {
+
+            int boleta = Integer.parseInt(JOptionPane.showInputDialog("Boleta:"));
+            String nombre = JOptionPane.showInputDialog("Nombre:");
+            int edad = Integer.parseInt(JOptionPane.showInputDialog("Edad:"));
+            char genero = JOptionPane.showInputDialog("Género (M/F):").charAt(0);
+
+            obj[x] = new Estudiante(boleta, nombre, edad, genero);
             x++;
+
+            JOptionPane.showMessageDialog(null, "Registrado correctamente");
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Arreglo lleno");
         }
-        public void mostrarEstudiante(){
-            //necesitamos recorrer el arreglo del tamanño que sea 
-            
-            for(int i = 0; i < x; i++ ){
-                //Visualizar los datos
-                JOptionPane.showMessageDialog(null, "La boleta del estudiante es: " + obj[i].getNumBoleta() + "\n" + "El nombre del estudiante es: " + obj[i].getNombre()+ "\n" + "La edad del estudiante es: " + obj[i].getEdad()+ "\n"+ "El nombre del estudiante es: "+ obj[i].getNombre()+ "\n");
+    }
+
+    // mostar
+    public void mostrar() {
+        if (x == 0) {
+            JOptionPane.showMessageDialog(null, "No hay datos");
+        } else {
+            String datos = "";
+
+            for (int i = 0; i < x; i++) {
+                datos += "Boleta: " + obj[i].getNumBoleta() + "\n"
+                        + "Nombre: " + obj[i].getNombre() + "\n"
+                        + "Edad: " + obj[i].getEdad() + "\n"
+                        + "Género: " + obj[i].getGenero() + "\n"
+                        + "-----------------\n";
             }
-         }
+
+            JOptionPane.showMessageDialog(null, datos);
+        }
+    }
+
+    // buscar
+    public void buscar() {
+        int boleta = Integer.parseInt(JOptionPane.showInputDialog("Boleta a buscar:"));
+
+        for (int i = 0; i < x; i++) {
+            if (obj[i].getNumBoleta() == boleta) {
+                JOptionPane.showMessageDialog(null,
+                        "Nombre: " + obj[i].getNombre() + "\n"
+                        + "Edad: " + obj[i].getEdad() + "\n"
+                        + "Género: " + obj[i].getGenero());
+                return;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "No encontrado");
+    }
+
+    // editar
+    public void editar() {
+        int boleta = Integer.parseInt(JOptionPane.showInputDialog("Boleta a editar:"));
+
+        for (int i = 0; i < x; i++) {
+            if (obj[i].getNumBoleta() == boleta) {
+
+                obj[i].setNombre(JOptionPane.showInputDialog("Nuevo nombre"));
+                obj[i].setEdad(Integer.parseInt(JOptionPane.showInputDialog("Nueva edad")));
+                obj[i].setGenero(JOptionPane.showInputDialog("Nuevo género").charAt(0));
+
+                JOptionPane.showMessageDialog(null, "Actualizado");
+                return;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "No encontrado");
+    }
+
+    // eliminar
+    public void eliminar() {
+        int boleta = Integer.parseInt(JOptionPane.showInputDialog("Boleta a eliminar:"));
+
+        for (int i = 0; i < x; i++) {
+            if (obj[i].getNumBoleta() == boleta) {
+
+                for (int j = i; j < x - 1; j++) {
+                    obj[j] = obj[j + 1];
+                }
+
+                obj[x - 1] = null;
+                x--;
+
+                JOptionPane.showMessageDialog(null, "Eliminado");
+                return;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "No encontrado");
     }
 }
